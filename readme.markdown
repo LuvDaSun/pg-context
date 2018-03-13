@@ -70,17 +70,20 @@ PGHOST=pg.host.com PGDATABASE=postgres PGUSER=postgres PGPASSWORD=supersecret np
 ```
 
 # pre-commit hook
-NEVER commit something that breaks the build! If you do, you suck. You can
-easily prevent this by linking the `test.sh` script as a git `pre-push` or
-`pre-commit` hook!
+You might want to link the `test.sh` script as a `pre-push` or `pre-commit`
+hook. This will make sure that your code is tested before every commit. This
+will prevent you breaking the build.
 
-like this:
+You can link the `test.sh` script to the `pre-commit` hook with the following
+command:
 ```bash
 ln test.sh .git/hooks/pre-commit
 ```
 
-If you use a git commit hook for testing, you may also bypass this hook with
+If you use this git commit hook, you can bypass this hook with
 the `--no-verify` or `-n` option of git commit, like this:
 ```bash
 git commit -nm'some commit message'
 ```
+
+But beware, not testing === breaking builds! :-)
