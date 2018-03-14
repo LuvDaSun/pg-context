@@ -3,6 +3,8 @@ version: 2
 defaults: &npm_steps
   steps:
     - checkout
+    - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+    - run: npm install
     - restore_cache:
         key: npm-{{ checksum "package-lock.json" }}
     - run: npm install
@@ -11,12 +13,6 @@ defaults: &npm_steps
         paths:
           - ./node_modules
 jobs:
-  build:
-    docker:
-      - image: circleci/node:8
-    <<: *npm_steps
-    steps+:
-      - run: npm run compile
   lint:
     docker:
       - image: circleci/node:8
@@ -36,11 +32,23 @@ jobs:
     <<: *npm_steps
     steps+:
       - run: npm test
+  publish:
+    docker:
+      - image: circleci/node:8
+    <<: *npm_steps
+    steps+:
+      - run: npm publish
 
 workflows:
   version: 2
-  build_and_test:
+  build-and-deploy:
     jobs:
-      - build
       - lint
       - test
+      - deploy:
+          requires:
+            - lint
+            - test
+          filters:
+            branches:
+              only: v*
