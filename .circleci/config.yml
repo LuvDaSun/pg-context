@@ -44,7 +44,7 @@ workflows:
     jobs:
       - lint
       - test
-      - deploy:
+      - publish:
           requires:
             - lint
             - test
