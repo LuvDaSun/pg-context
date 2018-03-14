@@ -1,3 +1,14 @@
+defaults: &npm_steps
+  - checkout
+  - restore_cache:
+      keys:
+        - npm
+  - run: npm install
+  - save_cache:
+      key: npm
+      paths:
+        - ./node_modules
+  
 version: 2
 
 jobs:
@@ -6,28 +17,14 @@ jobs:
       - image: circleci/node:8
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - npm
-      - run: npm install
-      - save_cache:
-          key: npm
-          paths:
-            - ./node_modules
+      <<: *npm_steps
       - run: npm run compile
   lint:
     docker:
       - image: circleci/node:8
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - npm
-      - run: npm install
-      - save_cache:
-          key: npm
-          paths:
-            - ./node_modules
+      <<: *npm_steps
       - run: npm run lint
   test:
     docker:
@@ -41,14 +38,7 @@ jobs:
           - POSTGRES_DB: postgres
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - npm
-      - run: npm install
-      - save_cache:
-          key: npm
-          paths:
-            - ./node_modules
+      <<: *npm_steps
       - run: npm test
 
 workflows:
