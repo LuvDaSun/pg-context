@@ -13,7 +13,7 @@ jobs:
       - save_cache:
           key: npm
           paths:
-            "~/.npm"
+            - ./node_modules
       - run: npm run compile
   lint:
     docker:
@@ -27,7 +27,7 @@ jobs:
       - save_cache:
           key: npm
           paths:
-            "~/.npm"
+            - ./node_modules
       - run: npm run lint
   test:
     docker:
@@ -48,7 +48,7 @@ jobs:
       - save_cache:
           key: npm
           paths:
-            "~/.npm"
+            - ./node_modules
       - run: npm test
 
 workflows:
