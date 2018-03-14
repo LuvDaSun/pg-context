@@ -1,3 +1,5 @@
+version: 2
+
 defaults: &npm_steps
   - checkout
   - restore_cache:
@@ -8,8 +10,6 @@ defaults: &npm_steps
       key: npm
       paths:
         - ./node_modules
-  
-version: 2
 
 jobs:
   build:
