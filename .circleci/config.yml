@@ -49,5 +49,5 @@ workflows:
             - lint
             - test
           filters:
-            branches:
+            tags:
               only: v*
