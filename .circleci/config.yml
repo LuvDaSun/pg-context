@@ -4,7 +4,6 @@ defaults: &npm_steps
   steps:
     - checkout
     - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-    - run: npm install
     - restore_cache:
         key: npm-{{ checksum "package-lock.json" }}
     - run: npm install
