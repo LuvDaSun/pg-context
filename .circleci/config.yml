@@ -1,23 +1,32 @@
 version: 2
 
-defaults: &npm_steps
-  steps:
-    - checkout
-    - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-    - restore_cache:
-        key: npm-{{ checksum "package-lock.json" }}
-    - run: npm install
-    - save_cache:
-        key: npm-{{ checksum "package-lock.json" }}
-        paths:
-          - ./node_modules
 jobs:
+  prepare:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache:
+          key: npm-{{ checksum "package-lock.json" }}
+      - run: npm install
+      - save_cache:
+          key: npm-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - save_cache:
+          key: $CIRCLE_SHA1
+          paths:
+            - .
+      - run: npm run lint
+
   lint:
     docker:
       - image: circleci/node:8
-    <<: *npm_steps
-    steps+:
+    steps:
+      - restore_cache:
+          key: $CIRCLE_SHA1
       - run: npm run lint
+
   test:
     docker:
       - image: circleci/node:8
@@ -28,26 +37,36 @@ jobs:
         environment:
           - POSTGRES_USER: postgres
           - POSTGRES_DB: postgres
-    <<: *npm_steps
-    steps+:
+    steps:
+      - restore_cache:
+          key: $CIRCLE_SHA1
       - run: npm test
+
   publish:
     docker:
       - image: circleci/node:8
-    <<: *npm_steps
-    steps+:
+    steps:
+      - restore_cache:
+          key: build-$CIRCLE_SHA1
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run: npm publish
 
 workflows:
   version: 2
   build-and-deploy:
     jobs:
+      - prepare
       - lint
+          requires:
+            - prepare
       - test
+          requires:
+            - prepare
       - publish:
           requires:
             - lint
             - test
+            - prepare
           filters:
             tags:
               only: v*
