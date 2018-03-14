@@ -40,6 +40,7 @@ jobs:
     steps:
       - restore_cache:
           key: $CIRCLE_SHA1
+      - run: sleep 5
       - run: npm test
 
   publish:
