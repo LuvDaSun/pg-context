@@ -11,8 +11,7 @@ jobs:
             - npm
       - run: npm install
       - save_cache:
-          keys:
-            - npm
+          key: npm
           paths:
             "~/.npm"
       - run: npm run compile
@@ -26,8 +25,7 @@ jobs:
             - npm
       - run: npm install
       - save_cache:
-          keys:
-            - npm
+          key: npm
           paths:
             "~/.npm"
       - run: npm run lint
