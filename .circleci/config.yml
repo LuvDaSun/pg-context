@@ -7,14 +7,14 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        keys:
-          - npm
+          keys:
+            - npm
       - run: npm install
       - save_cache:
-        keys:
-          - npm
-        paths:
-          "~/.npm"
+          keys:
+            - npm
+          paths:
+            "~/.npm"
       - run: npm run compile
   lint:
     docker:
@@ -22,14 +22,14 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        keys:
-          - npm
+          keys:
+            - npm
       - run: npm install
       - save_cache:
-        keys:
-          - npm
-        paths:
-          "~/.npm"
+          keys:
+            - npm
+          paths:
+            "~/.npm"
       - run: npm run lint
 
 workflows:
