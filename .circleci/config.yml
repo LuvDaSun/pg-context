@@ -29,6 +29,27 @@ jobs:
           paths:
             "~/.npm"
       - run: npm run lint
+  test:
+    docker:
+      - image: circleci/node:8
+        environment:
+        - PGHOST: 127.0.0.1
+        - PGUSER: postgres
+      - image: circleci/postgres:9
+        environment:
+          - POSTGRES_USER: postgres
+          - POSTGRES_DB: postgres
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - npm
+      - run: npm install
+      - save_cache:
+          key: npm
+          paths:
+            "~/.npm"
+      - run: npm test
 
 workflows:
   version: 2
@@ -36,3 +57,4 @@ workflows:
     jobs:
       - build
       - lint
+      - test
