@@ -14,11 +14,10 @@ jobs:
           key: npm-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
-      - save_cache:
-          key: $CIRCLE_SHA1
+      - persist_to_workspace:
+          root: .
           paths:
             - .
-      - run: npm run lint
 
   lint:
     docker:
@@ -39,8 +38,8 @@ jobs:
           - POSTGRES_USER: postgres
           - POSTGRES_DB: postgres
     steps:
-      - restore_cache:
-          key: $CIRCLE_SHA1
+      - attach_workspace:
+          at: .
       - run: sleep 5
       - run: npm test
 
@@ -48,9 +47,8 @@ jobs:
     docker:
       - image: circleci/node:8
     steps:
-      - restore_cache:
-          key: $CIRCLE_SHA1
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - attach_workspace:
+          at: .
       - run: npm publish
 
 workflows:
@@ -66,7 +64,6 @@ workflows:
           requires:
             - prepare
       - publish:
-          context: npm-authorized
           requires:
             - lint
             - test
