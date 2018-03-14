@@ -6,17 +6,15 @@ jobs:
       - image: circleci/node:8
     steps:
       - checkout
-      - run: 
-        - npm install
-        - npm run compile
+      - run: npm install
+      - run: npm run compile
   lint:
     docker:
       - image: circleci/node:8
     steps:
       - checkout
-      - run:
-        - npm install
-        - npm run lint
+      - run: npm install
+      - run: npm run lint
 
 workflows:
   version: 2
