@@ -6,14 +6,30 @@ jobs:
       - image: circleci/node:8
     steps:
       - checkout
+      - restore_cache:
+        keys:
+          - npm
       - run: npm install
+      - save_cache:
+        keys:
+          - npm
+        paths:
+          "~/.npm"
       - run: npm run compile
   lint:
     docker:
       - image: circleci/node:8
     steps:
       - checkout
+      - restore_cache:
+        keys:
+          - npm
       - run: npm install
+      - save_cache:
+        keys:
+          - npm
+        paths:
+          "~/.npm"
       - run: npm run lint
 
 workflows:
