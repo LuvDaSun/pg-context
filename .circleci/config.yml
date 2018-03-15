@@ -17,6 +17,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
+            - .npmrc
             - node_modules
             - node
             - module
@@ -26,6 +27,7 @@ jobs:
     docker:
       - image: circleci/node:8
     steps:
+      - checkout
       - attach_workspace:
           at: .
       - run: npm run lint
@@ -41,6 +43,7 @@ jobs:
           - POSTGRES_USER: postgres
           - POSTGRES_DB: postgres
     steps:
+      - checkout
       - attach_workspace:
           at: .
       - run: sleep 5
@@ -50,6 +53,7 @@ jobs:
     docker:
       - image: circleci/node:8
     steps:
+      - checkout
       - attach_workspace:
           at: .
       - run: npm publish
