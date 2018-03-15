@@ -8,23 +8,26 @@ jobs:
       - checkout
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - restore_cache:
-          key: npm-{{ checksum "package-lock.json" }}
+          key: npm
       - run: npm install
       - save_cache:
-          key: npm-{{ checksum "package-lock.json" }}
+          key: npm
           paths:
-            - ./node_modules
+            - ~/.npm
       - persist_to_workspace:
           root: .
           paths:
-            - .
+            - node_modules
+            - node
+            - module
+            - types
 
   lint:
     docker:
       - image: circleci/node:8
     steps:
-      - restore_cache:
-          key: $CIRCLE_SHA1
+      - attach_workspace:
+          at: .
       - run: npm run lint
 
   test:
@@ -57,12 +60,21 @@ workflows:
     jobs:
       - prepare:
           context: npm-authorized
+          filters:
+            tags:
+              only: /.*/
       - lint:
           requires:
             - prepare
+          filters:
+            tags:
+              only: /.*/
       - test:
           requires:
             - prepare
+          filters:
+            tags:
+              only: /.*/
       - publish:
           requires:
             - lint
@@ -72,4 +84,4 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^v.*/
+              only: /.*/
