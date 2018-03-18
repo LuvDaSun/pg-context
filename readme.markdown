@@ -1,5 +1,7 @@
 pg-context
 
+[![CircleCI](https://circleci.com/gh/Gameye/pg-context.svg?style=svg)](https://circleci.com/gh/Gameye/pg-context)
+
 # description
 Create a postgres database in a context, when the context is disposed, the
 database is destroyed. This is ideal for testing purposes, you can easily
