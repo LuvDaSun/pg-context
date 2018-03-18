@@ -46,7 +46,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: sleep 5
       - run: npm test
 
   publish:
