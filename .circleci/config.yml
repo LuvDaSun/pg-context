@@ -46,6 +46,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
+      - run: ./node_modules/.bin/wait-port 5432
       - run: npm test
 
   publish:
