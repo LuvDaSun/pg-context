@@ -46,8 +46,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: sudo npm install dockerize --global
-      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run: sudo apt install postgresql-client
+      - run: for T in 1 2 3 5 8; do pg_isready && break || sleep $T; done
       - run: npm test
 
   publish:
