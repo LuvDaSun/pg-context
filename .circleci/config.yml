@@ -46,7 +46,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: ./node_modules/.bin/wait-port 5432
+      - run: sudo apt install postgresql-client
+      - run: for T in 1 2 3 5 8; do pg_isready && break || sleep $T; done
       - run: npm test
 
   publish:
