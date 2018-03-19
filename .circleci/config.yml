@@ -46,7 +46,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: npm install dockerize --global
+      - run: sudo npm install dockerize --global
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: npm test
 
