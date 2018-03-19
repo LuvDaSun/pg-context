@@ -46,7 +46,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: ./node_modules/.bin/wait-port 5432
+      - run: npm install dockerize --global
+      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: npm test
 
   publish:
