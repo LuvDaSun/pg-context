@@ -61,7 +61,7 @@ jobs:
 
 workflows:
   version: 2
-  test-and-deploy:
+  main:
     jobs:
       - prepare:
           context: npm-authorized
