@@ -8,10 +8,11 @@ jobs:
       - checkout
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
       - restore_cache:
-          key: npm
+          key: npm-
       - run: npm install
+      - run: npm install tap-junit
       - save_cache:
-          key: npm
+          key: npm-{{ .Revision }}
           paths:
             - ~/.npm
       - persist_to_workspace:
@@ -48,7 +49,9 @@ jobs:
           at: .
       - run: sudo apt install postgresql-client
       - run: for T in 1 2 3 5 8; do pg_isready && break || sleep $T; done
-      - run: npm test
+      - run: npm run spec-all | $(npm bin)/tap-junit --output "/tmp/test-results/spec"
+      - store_test_results:
+          path: /tmp/test-results
 
   publish:
     docker:
