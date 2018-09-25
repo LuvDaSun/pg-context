@@ -1,5 +1,5 @@
 import * as test from "blue-tape";
-import { using } from "using-disposable";
+import { using } from "dispose";
 import { PgContext } from "./pg-context";
 
 const sql = `

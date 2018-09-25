@@ -1,5 +1,5 @@
+import { DisposableComposition } from "dispose";
 import * as pg from "pg";
-import { DisposableComposition } from "using-disposable";
 
 let key = new Date().valueOf();
 

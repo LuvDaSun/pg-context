@@ -38,9 +38,9 @@ finally {
 }
 ```
 
-You could simplfy this by using the `using-disposable` library.
+You could simplfy this by using the `dispose` library.
 ```javascript
-import { using } from "using-disposable";
+import { using } from "dispose";
 import { PgContext } from "pg-context";
 
 // prepare a script that will initialize the database
