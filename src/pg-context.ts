@@ -17,7 +17,7 @@ export class PgContext extends DisposableComposition {
     }
 
     public pool!: pg.Pool;
-    private databaseName = `${this.poolConfig.database || ""}_${(++key).toString(36)}`;
+    public readonly databaseName = `${this.poolConfig.database || ""}_${(++key).toString(36)}`;
 
     protected constructor(
         private sql: string,
